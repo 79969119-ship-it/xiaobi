@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小比闪游</title> 
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <!-- 统一的 Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FFD700', // 金色
+                        secondary: '#4682B4', // 钢蓝色
+                        accent: '#FF6B6B', // 珊瑚红
+                        neutral: '#F8F9FA', // 浅灰色
+                        'macau-yellow': '#FFC107', // 澳门特色黄色
+                        'macau-blue': '#3498DB', // 澳门特色蓝色
+                        'macau-red': '#E74C3C', // 澳门特色红色
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.5s ease-in-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+            .gradient-bg {
+                background: linear-gradient(135deg, var(--tw-gradient-stops));
+            }
+            .scroll-reveal {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            }
+            .scroll-reveal.active {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- 顶部导航栏 -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-map-marker text-macau-red text-2xl"></i>
+                <span class="text-xl font-bold text-gray-800">小比闪游</span>
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#overview" class="text-gray-600 hover:text-macau-blue transition-colors">首页</a>
+                <a href="#version-a" class="text-gray-600 hover:text-macau-blue transition-colors">套餐A</a>
+                <a href="#version-b" class="text-gray-600 hover:text-macau-blue transition-colors">套餐B</a>
+                <a href="#comparison" class="text-gray-600 hover:text-macau-blue transition-colors">对比分析</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+                <i class="fa fa-bars text-xl"></i>
+            </button>
+        </div>
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg absolute w-full">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+                <a href="#overview" class="text-gray-600 hover:text-macau-blue transition-colors py-2">概述</a>
+                <a href="#version-a" class="text-gray-600 hover:text-macau-blue transition-colors py-2">套餐A</a>
+                <a href="#version-b" class="text-gray-600 hover:text-macau-blue transition-colors py-2">套餐B</a>
+                <a href="#comparison" class="text-gray-600 hover:text-macau-blue transition-colors py-2">对比分析</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 头部区域 -->
+    <header id="overview" class="bg-gradient-to-r from-macau-blue to-macau-yellow text-white py-16 md:py-24">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-6xl md:text-8xl font-bold mb-8 text-shadow animate-fade-in">
+                澳门一日游
+            </h1>
+            <p class="text-4xl md:text-5xl max-w-3xl mx-auto animate-slide-up">
+                为您打造的一场深度、沉浸、充满故事感的旅行
+            </p>
+
+    </header>
+
+    <!-- 主要内容区域 -->
+    <main class="container mx-auto px-4 py-12">
+        <!-- 方案对比区域 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+            <!-- 套餐A -->
+            <section id="version-a" class="bg-white rounded-xl shadow-md overflow-hidden card-hover scroll-reveal">
+                <div class="relative h-64 overflow-hidden">
+                    <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/6773bcb7c8aa4bad9271d9b2b17b0cea~tplv-a9rns2rl98-image.image?rcl=20251109040403FE35521183B66B933D8A&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1765224273&x-signature=5c7pYTdI0erS2AZpYfm5sE68Wa4%3D" 
+                         alt="澳门便捷游" 
+                         class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                    <div class="absolute top-0 left-0 bg-macau-blue text-white px-4 py-2 rounded-br-lg font-bold">
+                        套餐A
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <span class="bg-macau-blue text-white text-xs font-semibold px-3 py-1 rounded-full">
+                            价值/便利
+                        </span>
+                        <span class="ml-2 text-gray-500 text-sm">"轻松畅游，全家无忧"版</span>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-2 text-gray-800">【周五闪游澳门】一键解锁！2大1小超值葡韵日，省心又省钱</h2>
+                    <p class="text-gray-600 mb-6">无需规划+交通串联+免费景点=最适合说走就走家庭的完美一日</p>
+                    
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold mb-3 flex items-center">
+                            <i class="fa fa-clock-o text-macau-blue mr-2"></i>行程安排
+                        </h3>
+                        <ul class="space-y-3">
+                            <li class="flex">
+                                <span class="font-semibold text-macau-blue w-24">09:00-10:30</span>
+                                <span>澳门塔观景台 - 高空俯瞰澳门全景</span>
+                            </li>
+                            <li class="flex">
+                                <span class="font-semibold text-macau-blue w-24">10:30-12:00</span>
+                                <span>大三巴牌坊 - 澳门标志性景点参观</span>
+                            </li>
+                            <li class="flex">
+                                <span class="font-semibold text-macau-blue w-24">12:00-13:30</span>
+                                <span>葡式餐厅午餐 - 品尝正宗葡国菜</span>
+                            </li>
+                            <li class="flex">
+                                <span class="font-semibold text-macau-blue w-24">13:30-15:00</span>
+                                <span>议事亭前地 - 历史中心漫步</span>
+                            </li>
+                            <li class="flex">
+                                <span class="font-semibold text-macau-blue w-24">15:00-16:30</span>
+                                <span>威尼斯人度假村 - 体验威尼斯风情</span>
+                            </li>
+                            <li class="flex">
+                                <span class="font-semibold text-macau-blue w-24">16:30-18:00</span>
+                                <span>官也街 - 美食探索之旅</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold mb-3 flex items-center">
+                            <i class="fa fa-star text-macau-blue mr-2"></i>方案亮点
+                        </h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>交通无缝衔接，省去转车烦恼</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>精选免费景点，性价比高</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>行程宽松，适合有小孩的家庭</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>专业导游全程讲解，深入了解澳门历史文化</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <span class="text-2xl font-bold text-macau-red">¥899</span>
+                            <span class="text-gray-500">/ 2大1小</span>
+                        </div>
+                        <button class="bg-macau-blue hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-300 flex items-center">
+                            <i class="fa fa-book mr-2"></i>立即预订
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 套餐B -->
+            <section id="version-b" class="bg-white rounded-xl shadow-md overflow-hidden card-hover scroll-reveal">
+                <div class="relative h-64 overflow-hidden">
+                    <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/f4f8c6e4945d4bc5977934cb47e84444~tplv-a9rns2rl98-image.image?rcl=20251109040403FE35521183B66B933D8A&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1765224273&x-signature=4MeFRa5KrcQbvN6Id5oU4EontiU%3D" 
+                         alt="澳门亲子探险营" 
+                         class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                    <div class="absolute top-0 left-0 bg-macau-red text-white px-4 py-2 rounded-br-lg font-bold">
+                        套餐B
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <span class="bg-macau-red text-white text-xs font-semibold px-3 py-1 rounded-full">
+                            体验/儿童优先
+                        </span>
+                        <span class="ml-2 text-gray-500 text-sm">"童趣探索，文化寻宝"版</span>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-2 text-gray-800">【澳门亲子探险营】出发！带孩子闯关葡式文化寻宝图🗺️</h2>
+                    <p class="text-gray-600 mb-6">将历史变成故事，让建筑成为乐园，打造一场孩子主导的沉浸式文化体验！</p>
+                    
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold mb-3 flex items-center">
+                            <i class="fa fa-clock-o text-macau-red mr-2"></i>行程安排
+                        </h3>
+                        <ul class="space-y-3">
+                            <li class="flex">
+                                <span class="font-semibold text-macau-red w-24">09:30-10:00</span>
+                                <span>集合与破冰游戏 - 认识澳门历史文化</span>
+                            </li>
+                            <li class="flex">
+                                <span class="font-semibold text-macau-red w-24">10:00-11:30</span>
+                                <span>大三巴牌坊寻宝游戏 - 互动式探索历史</span>
+                            </li>
+                            <li class="flex">
+                                <span class="font-semibold text-macau-red w-24">11:30-12:30</span>
+                                <span>葡式蛋挞制作体验 - 亲子共同参与</span>
+                            </li>
+                            <li class="flex">
+                                <span class="font-semibold text-macau-red w-24">12:30-14:00</span>
+                                <span>儿童友好型葡式午餐 - 适合孩子口味</span>
+                            </li>
+                            <li class="flex">
+                                <span class="font-semibold text-macau-red w-24">14:00-16:00</span>
+                                <span>澳门博物馆互动体验 - 寓教于乐</span>
+                            </li>
+                            <li class="flex">
+                                <span class="font-semibold text-macau-red w-24">16:00-17:30</span>
+                                <span>葡式手工艺制作 - 带走专属纪念品</span>
+                            </li>
+                            <li class="flex">
+                                <span class="font-semibold text-macau-red w-24">17:30-18:00</span>
+                                <span>结营仪式与证书颁发</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold mb-3 flex items-center">
+                            <i class="fa fa-star text-macau-red mr-2"></i>方案亮点
+                        </h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>专为6-12岁儿童设计的互动体验</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>游戏化学习，让孩子主动探索文化</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>专业儿童导师带队，确保安全与体验</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <span>包含多项亲子互动活动，增进家庭感情</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <span class="text-2xl font-bold text-macau-red">¥1299</span>
+                            <span class="text-gray-500">/ 2大1小</span>
+                        </div>
+                        <button class="bg-macau-red hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-300 flex items-center">
+                            <i class="fa fa-book mr-2"></i>立即预订
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 对比分析区域 -->
+        <section id="comparison" class="mb-16 scroll-reveal">
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">套餐对比分析</h2>
+                
+                <!-- 交互式对比表 -->
+                <div class="overflow-x-auto mb-8">
+                    <table class="w-full border-collapse">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="py-3 px-4 text-left text-gray-700 border-b">对比项目</th>
+                                <th class="py-3 px-4 text-left text-macau-blue border-b">
+                                    <div class="flex items-center">
+                                        <span class="w-4 h-4 bg-macau-blue rounded-full mr-2"></span>
+                                        套餐A: 价值/便利版
+                                    </div>
+                                </th>
+                                <th class="py-3 px-4 text-left text-macau-red border-b">
+                                    <div class="flex items-center">
+                                        <span class="w-4 h-4 bg-macau-red rounded-full mr-2"></span>
+                                        套餐B: 体验/儿童优先版
+                                    </div>
+                                </th>
+                                <th class="py-3 px-4 text-left text-gray-700 border-b">适合人群</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="py-3 px-4 border-b font-medium">价格</td>
+                                <td class="py-3 px-4 border-b">¥899/2大1小</td>
+                                <td class="py-3 px-4 border-b">¥1299/2大1小</td>
+                                <td class="py-3 px-4 border-b">预算有限家庭</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="py-3 px-4 border-b font-medium">行程节奏</td>
+                                <td class="py-3 px-4 border-b">宽松舒适</td>
+                                <td class="py-3 px-4 border-b">紧凑丰富</td>
+                                <td class="py-3 px-4 border-b">喜欢悠闲旅行的家庭</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="py-3 px-4 border-b font-medium">儿童参与度</td>
+                                <td class="py-3 px-4 border-b">一般</td>
+                                <td class="py-3 px-4 border-b">高</td>
+                                <td class="py-3 px-4 border-b">有活泼好动儿童的家庭</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="py-3 px-4 border-b font-medium">文化体验深度</td>
+                                <td class="py-3 px-4 border-b">中等</td>
+                                <td class="py-3 px-4 border-b">深入</td>
+                                <td class="py-3 px-4 border-b">注重教育体验的家庭</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="py-3 px-4 border-b font-medium">交通便利性</td>
+                                <td class="py-3 px-4 border-b">高</td>
+                                <td class="py-3 px-4 border-b">中等</td>
+                                <td class="py-3 px-4 border-b">希望省心省力的家庭</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="py-3 px-4 border-b font-medium">餐饮安排</td>
+                                <td class="py-3 px-4 border-b">传统葡式餐厅</td>
+                                <td class="py-3 px-4 border-b">儿童友好型葡式餐点</td>
+                                <td class="py-3 px-4 border-b">有挑食儿童的家庭</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- 雷达图对比 -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold mb-4 text-center">方案各维度表现对比</h3>
+                    <div class="w-full h-80">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- 选择建议 -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold mb-4">如何选择适合您的方案？</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="border-l-4 border-macau-blue pl-4">
+                            <h4 class="font-bold text-lg mb-2 text-macau-blue">选择套餐A如果：</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-start">
+                                    <i class="fa fa-check text-macau-blue mt-1 mr-2"></i>
+                                    <span>您希望节省旅行成本</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa fa-check text-macau-blue mt-1 mr-2"></i>
+                                    <span>您偏好轻松自在的旅行节奏</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa fa-check text-macau-blue mt-1 mr-2"></i>
+                                    <span>您希望减少交通安排的麻烦</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa fa-check text-macau-blue mt-1 mr-2"></i>
+                                    <span>您的孩子年龄较大或性格较安静</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="border-l-4 border-macau-red pl-4">
+                            <h4 class="font-bold text-lg mb-2 text-macau-red">选择套餐B如果：</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-start">
+                                    <i class="fa fa-check text-macau-red mt-1 mr-2"></i>
+                                    <span>您重视孩子的参与体验和学习</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa fa-check text-macau-red mt-1 mr-2"></i>
+                                    <span>您希望孩子深入了解澳门文化</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa fa-check text-macau-red mt-1 mr-2"></i>
+                                    <span>您的孩子喜欢互动游戏和手工活动</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa fa-check text-macau-red mt-1 mr-2"></i>
+                                    <span>您愿意为高质量的亲子体验投资</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 用户评价区域 -->
+        <section class="mb-16 scroll-reveal">
+            <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">用户真实评价</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- 评价1 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400 flex">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <span class="ml-2 text-gray-600">5.0</span>
+                    </div>
+                    <p class="text-gray-700 mb-4">"套餐A真的很省心，我们带着5岁的孩子，行程不会太赶，导游也很照顾孩子。交通安排得很好，不用自己找路，非常适合我们这种不想操心的家庭。"</p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-bold">
+                            L
+                        </div>
+                        <div class="ml-3">
+                            <div class="font-medium">李女士</div>
+                            <div class="text-sm text-gray-500">带着5岁孩子的家庭</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 评价2 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400 flex">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-half-o"></i>
+                        </div>
+                        <span class="ml-2 text-gray-600">4.5</span>
+                    </div>
+                    <p class="text-gray-700 mb-4">"套餐B的亲子活动设计得非常棒！我家8岁的儿子完全沉浸在寻宝游戏中，连平时不喜欢博物馆的他都兴致勃勃。虽然价格稍高，但看到孩子学到了很多东西，觉得很值得。"</p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-bold">
+                            W
+                        </div>
+                        <div class="ml-3">
+                            <div class="font-medium">王先生</div>
+                            <div class="text-sm text-gray-500">带着8岁孩子的家庭</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 评价3 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400 flex">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                        </div>
+                        <span class="ml-2 text-gray-600">4.0</span>
+                    </div>
+                    <p class="text-gray-700 mb-4">"我们对比了两个版本，最终选择了套餐A。行程安排合理，景点经典，导游讲解专业。孩子虽然没有特别的互动活动，但也玩得很开心。性价比很高，推荐给预算有限的家庭。"</p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-bold">
+                            Z
+                        </div>
+                        <div class="ml-3">
+                            <div class="font-medium">张女士</div>
+                            <div class="text-sm text-gray-500">带着7岁孩子的家庭</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 常见问题区域 -->
+        <section class="mb-16 scroll-reveal">
+            <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">常见问题</h2>
+            
+            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="divide-y divide-gray-200">
+                    <!-- FAQ 项目 -->
+                    <div class="faq-item">
+                        <button class="faq-question w-full flex justify-between items-center p-6 text-left font-medium text-gray-800 hover:bg-gray-50 focus:outline-none">
+                            <span>两个套餐都包含哪些费用？</span>
+                            <i class="fa fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer hidden p-6 pt-0 text-gray-600 bg-gray-50">
+                            <p>套餐A包含：全程交通、景点门票、导游服务、午餐。不包含：个人消费、澳门签证费用。</p>
+                            <p class="mt-2">套餐B包含：全程交通、景点门票、专业儿童导师、互动活动材料、手工制作材料、午餐、结营证书。不包含：个人消费、澳门签证费用。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <button class="faq-question w-full flex justify-between items-center p-6 text-left font-medium text-gray-800 hover:bg-gray-50 focus:outline-none">
+                            <span>孩子的年龄限制是多少？</span>
+                            <i class="fa fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer hidden p-6 pt-0 text-gray-600 bg-gray-50">
+                            <p>套餐A适合所有年龄段的孩子，但建议3岁以上。</p>
+                            <p class="mt-2">套餐B专为6-12岁的儿童设计，活动内容和难度都针对这个年龄段的孩子。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <button class="faq-question w-full flex justify-between items-center p-6 text-left font-medium text-gray-800 hover:bg-gray-50 focus:outline-none">
+                            <span>如果天气不好，行程会如何调整？</span>
+                            <i class="fa fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer hidden p-6 pt-0 text-gray-600 bg-gray-50">
+                            <p>我们会密切关注天气预报。如果遇到恶劣天气，会提前通知客人，并提供以下选项：</p>
+                            <ul class="list-disc pl-5 mt-2 space-y-1">
+                                <li>改期到其他日期</li>
+                                <li>调整行程，优先安排室内活动</li>
+                                <li>全额退款</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <button class="faq-question w-full flex justify-between items-center p-6 text-left font-medium text-gray-800 hover:bg-gray-50 focus:outline-none">
+                            <span>是否提供酒店接送服务？</span>
+                            <i class="fa fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer hidden p-6 pt-0 text-gray-600 bg-gray-50">
+                            <p>套餐A和套餐B都提供澳门半岛主要酒店的接送服务。预订时请备注您的酒店名称，我们会确认是否在接送范围内。</p>
+                            <p class="mt-2">如果您的酒店不在接送范围内，我们会安排在指定地点集合。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <button class="faq-question w-full flex justify-between items-center p-6 text-left font-medium text-gray-800 hover:bg-gray-50 focus:outline-none">
+                            <span>如何预订？预订后可以取消吗？</span>
+                            <i class="fa fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer hidden p-6 pt-0 text-gray-600 bg-gray-50">
+                            <p>您可以通过网站上的"立即预订"按钮进行预订，填写相关信息并支付费用。</p>
+                            <p class="mt-2">关于取消政策：</p>
+                            <ul class="list-disc pl-5 mt-1 space-y-1">
+                                <li>提前7天以上取消：全额退款</li>
+                                <li>提前3-6天取消：退款70%</li>
+                                <li>提前1-2天取消：退款50%</li>
+                                <li>当天取消或未到场：不退款</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 预订区域 -->
+        <section class="scroll-reveal">
+            <div class="bg-gradient-to-r from-macau-blue to-macau-yellow rounded-xl shadow-lg overflow-hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2">
+                    <div class="p-8 md:p-12 flex flex-col justify-center">
+                        <h2 class="text-3xl font-bold mb-4 text-white text-shadow">准备好开始您的澳门之旅了吗？</h2>
+                        <p class="text-white text-lg mb-8">选择适合您家庭的方案，开启一段难忘的澳门葡式文化体验。</p>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                            <button class="bg-white text-macau-blue hover:bg-gray-100 font-bold py-3 px-6 rounded-lg transition-colors duration-300 flex items-center justify-center">
+                                <i class="fa fa-book mr-2"></i>预订套餐A
+                            </button>
+                            <button class="bg-white text-macau-red hover:bg-gray-100 font-bold py-3 px-6 rounded-lg transition-colors duration-300 flex items-center justify-center">
+                                <i class="fa fa-book mr-2"></i>预订套餐B
+                            </button>
+                        </div>
+                        
+                        <p class="text-white opacity-80">有任何疑问？请联系我们的客服团队：</p>
+                        <div class="flex items-center mt-2">
+                            <i class="fa fa-phone text-white mr-2"></i>
+                            <span class="text-white">400-123-4567</span>
+                        </div>
+                        <div class="flex items-center mt-1">
+                            <i class="fa fa-envelope text-white mr-2"></i>
+                            <span class="text-white">info@macautour.com</span>
+                        </div>
+                    </div>
+
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent to-macau-blue opacity-30"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部区域 -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">澳门一日游</h3>
+                    <p class="text-gray-400">为您提供高质量的澳门旅游体验，让您深入了解澳门的葡式文化。</p>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fa fa-weixin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fa fa-weibo text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fa fa-instagram text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">快速链接</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#overview" class="text-gray-400 hover:text-white transition-colors">概述</a></li>
+                        <li><a href="#version-a" class="text-gray-400 hover:text-white transition-colors">套餐A</a></li>
+                        <li><a href="#version-b" class="text-gray-400 hover:text-white transition-colors">套餐B</a></li>
+                        <li><a href="#comparison" class="text-gray-400 hover:text-white transition-colors">对比分析</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">联系我们</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fa fa-map-marker mt-1 mr-2 text-gray-400"></i>
+                            <span class="text-gray-400">澳门议事亭前地123号</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-phone mt-1 mr-2 text-gray-400"></i>
+                            <span class="text-gray-400">400-123-4567</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-envelope mt-1 mr-2 text-gray-400"></i>
+                            <span class="text-gray-400">info@macautour.com</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">订阅我们</h3>
+                    <p class="text-gray-400 mb-4">订阅我们的通讯，获取最新的旅游优惠和活动信息。</p>
+                    <form class="flex">
+                        <input type="email" placeholder="您的邮箱地址" class="px-4 py-2 w-full rounded-l-lg focus:outline-none text-gray-800">
+                        <button type="submit" class="bg-macau-yellow hover:bg-yellow-500 text-gray-800 px-4 py-2 rounded-r-lg transition-colors">
+                            <i class="fa fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 澳门一日游. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 移动端菜单切换
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 滚动显示动画
+        function handleScrollAnimation() {
+            const elements = document.querySelectorAll('.scroll-reveal');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                if (elementTop < windowHeight - 100) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+        // FAQ 切换
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                
+                // 切换当前问题的回答显示/隐藏
+                answer.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+                
+                // 关闭其他已打开的问题
+                document.querySelectorAll('.faq-question').forEach(otherQuestion => {
+                    if (otherQuestion !== this) {
+                        const otherAnswer = otherQuestion.nextElementSibling;
+                        const otherIcon = otherQuestion.querySelector('i');
+                        otherAnswer.classList.add('hidden');
+                        otherIcon.classList.remove('rotate-180');
+                    }
+                });
+            });
+        });
+
+        // 雷达图
+        function initRadarChart() {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['价格优势', '行程舒适度', '儿童参与度', '文化体验', '交通便利性', '餐饮质量'],
+                    datasets: [
+                        {
+                            label: '版本A: 价值/便利版',
+                            data: [9, 8, 6, 7, 9, 7],
+                            backgroundColor: 'rgba(70, 130, 180, 0.2)',
+                            borderColor: 'rgba(70, 130, 180, 1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgba(70, 130, 180, 1)',
+                        },
+                        {
+                            label: '版本B: 体验/儿童优先版',
+                            data: [6, 7, 9, 9, 7, 8],
+                            backgroundColor: 'rgba(231, 76, 60, 0.2)',
+                            borderColor: 'rgba(231, 76, 60, 1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgba(231, 76, 60, 1)',
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 10,
+                            ticks: {
+                                stepSize: 2
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // 页面加载和滚动时执行
+        window.addEventListener('load', function() {
+            handleScrollAnimation();
+            initRadarChart();
+        });
+
+        window.addEventListener('scroll', handleScrollAnimation);
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80, // 考虑导航栏高度
+                        behavior: 'smooth'
+                    });
+                    
+                    // 如果是移动端，点击后关闭菜单
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+
+        // 预订按钮点击事件
+        document.querySelectorAll('button:contains("立即预订"), button:contains("预订版本A"), button:contains("预订版本B")').forEach(button => {
+            button.addEventListener('click', function() {
+                alert('预订功能即将上线，敬请期待！');
+            });
+        });
+    </script>
+</body>
+</html>
